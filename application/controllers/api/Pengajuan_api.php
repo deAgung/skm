@@ -23,23 +23,31 @@ class Pengajuan_api extends REST_Controller {
         if($jwt_hasil['status']== TRUE){
             $data = (array) $jwt_hasil['data'];
             $tujuan = $this->post('tujuan');
-            $newData = array(
-                'username' => $data['username'],
-                'nama' => $data['nama'],
-                'tujuan' => $tujuan
-            );
-            
-            $output = $this->Pengajuan_m->insertPengajuan($newData);
-            if(!empty($output) AND $output != FALSE){
-                $message = array(
-                    'status' => true,
-                    'message' => 'Pengajuan berhasil diberikan'
+            if(!empty($tujuan)){
+                $newData = array(
+                    'username' => $data['username'],
+                    'nama' => $data['nama'],
+                    'tujuan' => $tujuan
                 );
-                $this->response($message, REST_Controller::HTTP_OK);
+                
+                $output = $this->Pengajuan_m->insertPengajuan($newData);
+                if(!empty($output) AND $output != FALSE){
+                    $message = array(
+                        'status' => true,
+                        'message' => 'Pengajuan berhasil diberikan'
+                    );
+                    $this->response($message, REST_Controller::HTTP_OK);
+                } else {
+                    $message = array(
+                        'status' => false,
+                        'message' => 'Pengajuan gagal diberikan'
+                    );
+                    $this->response($message, REST_Controller::HTTP_OK);
+                }
             } else {
                 $message = array(
                     'status' => false,
-                    'message' => 'Pengajuan gagal diberikan'
+                    'message' => 'Isian tidak boleh kosong'
                 );
                 $this->response($message, REST_Controller::HTTP_OK);
             }

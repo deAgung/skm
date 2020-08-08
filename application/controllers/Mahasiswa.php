@@ -6,6 +6,7 @@ class Mahasiswa extends CI_Controller {
     {
 		parent::__construct();
 		date_default_timezone_set('Asia/Jakarta');
+		$this->CheckLogin->cek_login();
 	}
 	
 	public function index()

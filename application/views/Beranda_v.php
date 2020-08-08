@@ -68,8 +68,8 @@
         </div>
     </div>
 </div>
+
 <script>
-    // var state = 0;
     $(document).ready( function () {
         $('#oke_btn').hide();
         getRequest();
@@ -189,7 +189,6 @@
     }
 
     function openModal(){
-        // state = 1;
         $('#exampleModal').modal({backdrop:'static', keyboard:false});
     }
 
@@ -229,12 +228,7 @@
                     $('#pesan').html('');
                     $('#pesan').append('<h4 style="color:red">'+data.message+'</h4>');
                 }
-                
-            },
-            // error: function(data){
-            //     // $('#login_btn').removeClass('disabled loading');
-                
-            // }
+            }
         });
     }
     
@@ -246,10 +240,16 @@
             url  : '<?php echo base_url('api/pengajuan_api/update') ;?>',
             data : data,
             success : function(data) {
-                // alert(data.message);
                 if(data.status){
-                    alert(data.message);
-                    window.location.href = '<?php echo base_url('beranda')?>';
+                    $('#exampleModal').modal({backdrop:'static', keyboard:false});
+                    $('#formulir').hide();
+                    $('#close_btn').hide();
+                    $('#batal_btn').hide();
+                    $('#kirim_btn').hide();
+                    $('#oke_btn').show();
+                    $('#pesan').show();
+                    $('#pesan').html('');
+                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
                 } else {
                 }
                 
