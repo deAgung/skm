@@ -70,6 +70,7 @@
 </div>
 
 <script>
+    moment.locale('id');
     $(document).ready( function () {
         $('#oke_btn').hide();
         getRequest();
@@ -104,7 +105,7 @@
                         $('#bodyReq').append(
                             '<tr>'+
                                 '<td>'+nomor+'</td>'+
-                                '<td>'+data.data[x].tanggal+'</td>'+
+                                '<td>'+moment(data.data[x].tanggal).format('Do MMMM YYYY HH:mm')+'</td>'+
                                 '<td>'+data.data[x].tujuan+'</td>'+
                                 '<td>Sedang diperiksa</td>'+
                                 '<td><button id="batalkan_btn" type="button" class="btn btn-danger" onclick="batalkan('+data.data[0].id+')">Batalkan</button></td>'+

@@ -99,7 +99,6 @@
                                     '<th>NIM</th>'+
                                     '<th>Nama</th>'+
                                     '<th>Alamat</th>'+
-                                    // '<th>Aksi</th>'+
                                 '</tr>'+
                             '</thead>'+
                             '<tbody id="bodyList">'+
@@ -116,7 +115,6 @@
                             '<td>'+data.data[x].username+'</td>'+
                             '<td>'+data.data[x].nama+'</td>'+
                             '<td>'+data.data[x].alamat+'</td>'+
-                            // '<td><button id="batalkan_btn" type="button" class="btn btn-danger" onclick="batalkan('+data.data[0].id+')">Batalkan</button></td>'+
                         '</tr>'
                     );
                 }
@@ -140,7 +138,6 @@
             url  : '<?php echo base_url('api/mahasiswa_api/input') ;?>',
             data : data,
             success : function(data) {
-                // alert(data.message);
                 if(data.status){
                     $('#formulir').hide();
                     $('#close_btn').hide();

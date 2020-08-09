@@ -42,23 +42,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Form pengajuan</h5>
-            <button id="close_btn" type="button" class="close" aria-label="Close" onclick="cancel()">
-            <span aria-hidden="true">&times;</span>
-            </button>
+            <h5 class="modal-title" id="exampleModalLabel">Pesan</h5>
         </div>
         <div class="modal-body">
-            <form id="formulir">
-                <div class="form-group">
-                    <label for="inputTujuan">Tujuan pengajuan</label>
-                    <textarea class="form-control" id="tujuan_i" rows="3"></textarea>
-                </div>
-            </form>
             <div id="pesan"></div>
         </div>
         <div class="modal-footer">
-            <button id="batal_btn" type="button" class="btn btn-secondary" onclick="cancel()">Batal</button>
-            <button id="kirim_btn" type="button" class="btn btn-primary" onclick="kirim()">Kirim</button>
             <button id="oke_btn" type="button" class="btn btn-primary" onclick="oke()">Oke</button>
         </div>
         </div>
@@ -67,9 +56,7 @@
 
 <script>
     moment.locale('id');
-    var state = 0;
     $(document).ready( function () {
-        $('#oke_btn').hide();
         getRequest();
         getHistory();
     });
@@ -192,44 +179,7 @@
     }
 
     function openModal(){
-        state = 1;
         $('#exampleModal').modal({backdrop:'static', keyboard:false});
-    }
-
-    function cancel(){
-        $('#tujuan_i').val('');
-        $('#pesan').hide();
-        $('#pesan').html('');
-        $('#exampleModal').modal('hide');
-    }
-
-    function kirim(){
-        // $('#login_btn').addClass('disabled loading');
-        var tujuan = $('#tujuan_i').val();
-        var data = {tujuan: tujuan};
-        console.log(data);
-        $.ajax({
-            type : "post",
-            url  : '<?php echo base_url('api/pengajuan_api/input') ;?>',
-            data : data,
-            success : function(data) {
-                // alert(data.message);
-                if(data.status){
-                    $('#formulir').hide();
-                    $('#close_btn').hide();
-                    $('#batal_btn').hide();
-                    $('#kirim_btn').hide();
-                    $('#oke_btn').show();
-                    $('#pesan').show();
-                    $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
-                } else {
-                    $('#pesan').show();
-                    $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:red">'+data.message+'</h4>');
-                }
-            }
-        });
     }
     
     function oke(){
@@ -245,14 +195,19 @@
             data : data,
             success : function(data) {
                 if(data.status){
-                    alert(data.message);
-                    window.location.href = '<?php echo base_url('beranda')?>';
+                    $('#exampleModal').modal({backdrop:'static', keyboard:false});
+                    $('#pesan').html('');
+                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
                 } else {
+                    $('#exampleModal').modal({backdrop:'static', keyboard:false});
+                    $('#pesan').html('');
+                    $('#pesan').append('<h4 style="color:red">'+data.message+'</h4>');
                 }
                 
             }
         });
     }
+
     function disagree(id){
         var data = {id: id, indeks: '3'};
         // console.log(data);
@@ -262,11 +217,14 @@
             data : data,
             success : function(data) {
                 if(data.status){
-                    alert(data.message);
-                    window.location.href = '<?php echo base_url('beranda')?>';
+                    $('#exampleModal').modal({backdrop:'static', keyboard:false});
+                    $('#pesan').html('');
+                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
                 } else {
+                    $('#exampleModal').modal({backdrop:'static', keyboard:false});
+                    $('#pesan').html('');
+                    $('#pesan').append('<h4 style="color:red">'+data.message+'</h4>');
                 }
-                
             }
         });
     }
