@@ -87,9 +87,9 @@
     }
 
     function getMhs(){
-        $.getJSON("<?php echo base_url('api/mahasiswa_api/fetchAllMahasiswa')?>" ,function(data,status){
+        $.getJSON("<?php echo base_url('mahasiswa/fetchAllMahasiswa')?>" ,function(data,status){
             console.log(data);
-            if(data.status){
+            if(data['status']){
                 $('#daftarMahasiswa').html(
                     '<div style="overflow-x:scroll">'+
                         '<table id="listMhs" class="table">'+
@@ -107,21 +107,21 @@
                     '</div>'
                 );
                 var nomor = 0;
-                for(x in data.data){
+                for(x in data['data']){
                     nomor = nomor+1;
                     $('#bodyList').append(
                         '<tr>'+
                             '<td>'+nomor+'</td>'+
-                            '<td>'+data.data[x].username+'</td>'+
-                            '<td>'+data.data[x].nama+'</td>'+
-                            '<td>'+data.data[x].alamat+'</td>'+
+                            '<td>'+data['data'][x].username+'</td>'+
+                            '<td>'+data['data'][x].nama+'</td>'+
+                            '<td>'+data['data'][x].alamat+'</td>'+
                         '</tr>'
                     );
                 }
                 $('#listMhs').DataTable();
             } else {
                 $('#daftarMahasiswa').html(
-                    '<p style="text-align:center">'+data.message+'</p>'
+                    '<p style="text-align:center">'+data['message']+'</p>'
                 );
             }
         });
@@ -135,10 +135,11 @@
         // console.log(data);
         $.ajax({
             type : "post",
-            url  : '<?php echo base_url('api/mahasiswa_api/input') ;?>',
+            url  : '<?php echo base_url('mahasiswa/input') ;?>',
             data : data,
             success : function(data) {
-                if(data.status){
+                let d = JSON.parse(data);
+                if(d.status){
                     $('#formulir').hide();
                     $('#close_btn').hide();
                     $('#batal_btn').hide();
@@ -146,11 +147,11 @@
                     $('#oke_btn').show();
                     $('#pesan').show();
                     $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
+                    $('#pesan').append('<h4 style="color:green">'+d.message+'</h4>');
                 } else {
                     $('#pesan').show();
                     $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:red">'+data.message+'</h4>');
+                    $('#pesan').append('<h4 style="color:red">'+d.message+'</h4>');
                 }
             }
         });

@@ -78,9 +78,9 @@
     });
     
     function getRequest(){
-        $.getJSON("<?php echo base_url('api/pengajuan_api/fetchPengajuanUser')?>" ,function(data,status){
-            // console.log(data);
-            if(data.status){
+        $.getJSON("<?php echo base_url('beranda/fetchPengajuanUser')?>" ,function(data,status){
+            // console.log(data['data'][0].id);
+            if(data['status']){
                 $('#pengajuanUser').html(
                     '<div style="overflow-x:scroll">'+
                         '<table id="reqUser" class="table">'+
@@ -99,16 +99,16 @@
                     '</div>'
                 );
                 var nomor = 0;
-                for(x in data.data){
+                for(x in data['data']){
                     nomor = nomor+1;
-                    if(data.data[x].status == 1){
+                    if(data['data'][x].status == 1){
                         $('#bodyReq').append(
                             '<tr>'+
                                 '<td>'+nomor+'</td>'+
-                                '<td>'+moment(data.data[x].tanggal).format('Do MMMM YYYY HH:mm')+'</td>'+
-                                '<td>'+data.data[x].tujuan+'</td>'+
+                                '<td>'+moment(data['data'][x].tanggal).format('Do MMMM YYYY HH:mm')+'</td>'+
+                                '<td>'+data['data'][x].tujuan+'</td>'+
                                 '<td>Sedang diperiksa</td>'+
-                                '<td><button id="batalkan_btn" type="button" class="btn btn-danger" onclick="batalkan('+data.data[0].id+')">Batalkan</button></td>'+
+                                '<td><button id="batalkan_btn" type="button" class="btn btn-danger" onclick="batalkan('+data['data'][0].id+')">Batalkan</button></td>'+
                             '</tr>'
                         );
                     };
@@ -116,16 +116,16 @@
                 $('#reqUser').DataTable();
             } else {
                 $('#pengajuanUser').html(
-                    '<p style="text-align:center">'+data.message+'</p>'
+                    '<p style="text-align:center">'+data['message']+'</p>'
                 );
             }
         });
     }
 
     function getHistory(){
-        $.getJSON("<?php echo base_url('api/pengajuan_api/fetchAllPengajuanUser')?>" ,function(data,status){
+        $.getJSON("<?php echo base_url('beranda/fetchAllPengajuanUser')?>" ,function(data,status){
             // console.log(data);
-            if(data.status){
+            if(data['status']){
                 $('#riwayatUser').html(
                     '<div style="overflow-x:scroll">'+
                         '<table id="hisUser" class="table">'+
@@ -143,10 +143,10 @@
                     '</div>'
                 );
                 var nomor = 0;
-                for(x in data.data){
+                for(x in data['data']){
                     nomor = nomor+1;
                     var status = '';
-                    switch (parseInt(data.data[x].status)) {
+                    switch (parseInt(data['data'][x].status)) {
                         case 2:
                             status = 'Menunggu finalisasi';
                             break;
@@ -154,7 +154,7 @@
                             status = 'Ditolak operator';
                             break;
                         case 4:
-                            status = 'No: '+data.data[x].no_surat;
+                            status = 'No: '+data['data'][x].no_surat;
                             break;
                         case 5:
                             status = 'Ditolak kepala BAAK';
@@ -168,10 +168,10 @@
                                 ${nomor}
                             </td>
                             <td>
-                                ${moment(data.data[x].tanggal).format('Do MMMM YYYY HH:mm')}
+                                ${moment(data['data'][x].tanggal).format('Do MMMM YYYY HH:mm')}
                             </td>
                             <td>
-                                ${data.data[x].tujuan}
+                                ${data['data'][x].tujuan}
                             </td>
                             <td>
                                 ${status}
@@ -183,7 +183,7 @@
                 $('#hisUser').DataTable();
             } else {
                 $('#riwayatUser').html(
-                    '<p style="text-align:center">'+data.message+'</p>'
+                    '<p style="text-align:center">'+data['message']+'</p>'
                 );
             }
         });
@@ -211,11 +211,11 @@
         console.log(data);
         $.ajax({
             type : "post",
-            url  : '<?php echo base_url('api/pengajuan_api/input') ;?>',
+            url  : '<?php echo base_url('beranda/input') ;?>',
             data : data,
             success : function(data) {
-                // alert(data.message);
-                if(data.status){
+                let d = JSON.parse(data);
+                if(d.status){
                     $('#formulir').hide();
                     $('#close_btn').hide();
                     $('#batal_btn').hide();
@@ -223,11 +223,11 @@
                     $('#oke_btn').show();
                     $('#pesan').show();
                     $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
+                    $('#pesan').append('<h4 style="color:green">'+d.message+'</h4>');
                 } else {
                     $('#pesan').show();
                     $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:red">'+data.message+'</h4>');
+                    $('#pesan').append('<h4 style="color:red">'+d.message+'</h4>');
                 }
             }
         });
@@ -238,10 +238,11 @@
         // console.log(data);
         $.ajax({
             type : "post",
-            url  : '<?php echo base_url('api/pengajuan_api/update') ;?>',
+            url  : '<?php echo base_url('beranda/update') ;?>',
             data : data,
             success : function(data) {
-                if(data.status){
+                let d = JSON.parse(data);
+                if(d.status){
                     $('#exampleModal').modal({backdrop:'static', keyboard:false});
                     $('#formulir').hide();
                     $('#close_btn').hide();
@@ -250,7 +251,7 @@
                     $('#oke_btn').show();
                     $('#pesan').show();
                     $('#pesan').html('');
-                    $('#pesan').append('<h4 style="color:green">'+data.message+'</h4>');
+                    $('#pesan').append('<h4 style="color:green">'+d.message+'</h4>');
                 } else {
                 }
                 

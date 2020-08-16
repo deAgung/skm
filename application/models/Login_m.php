@@ -18,9 +18,8 @@ class Login_m extends CI_Model{
         return $message;
     }
     function cek_login(){
-        $token = $this->session->userdata('user');
-        $jwt_hasil = $this->authorization_token->validateTokenPost($token);
-        if($jwt_hasil['status']== TRUE){
+        $token = $this->session->userdata('username');
+        if(!empty($token)){
             return true;
         } else {
             redirect('login');

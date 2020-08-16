@@ -63,17 +63,19 @@
         // console.log(data);
         $.ajax({
             type : "post",
-            url  : '<?php echo base_url('api/login_api/verify') ;?>',
+            url  : '<?php echo base_url('login/verify') ;?>',
             data : data,
             success : function(data) {
-                if(data.status){
+                let d = JSON.parse(data);
+                // console.log(d.status);
+                if(d.status){
                     $('#pesan').hide();
                     $('#pesan').html('');
                     window.location.href = '<?php echo base_url('beranda')?>';
                 } else {
                     $('#pesan').show();
                     $('#pesan').html('');
-                    $('#pesan').append('<p style="color:red">'+data.message+'</p>');
+                    $('#pesan').append('<p style="color:red">'+d.message+'</p>');
                 }
                 
             },
